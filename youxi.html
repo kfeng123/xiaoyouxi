@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8>
+<script>
+function game(){
+	this.canvas1=null;
+	this.ctx=null;
+	this.bird=new bird();
+	this.pipe=new pipe();
+	this.background=null;
+	this.startbutton=null;
+	//记录帧数
+	this.counter=0;
+	//0开始画面，1游戏画面，2结束画面
+	this.state=0;
+}
+function bird(){
+	//高度，从-100到100，初始是在中间
+	this.position=0;
+	this.speed=0;
+	//加速度
+	this.acc=0.2;
+	//旋转角度
+	this.rotate=0;
+	//动画状态，就是几个图片显示哪一张
+	this.state=0;
+	//图片
+	this.image=new Image();
+	this.image.src="images/bird.png"	
+}
+function pipe(){
+	//管子
+	this.image=new Image();
+	this.image.src="images/pipe.jpg"
+	this.position=[500,650,800,950];
+	this.height=new Array();
+	for (var i=0;i<4;i++)this.height[i]=300+100*Math.random();
+}
+
+
+game.prototype.init=function(){
+	this.canvas1=document.getElementById("canvas1");
+	this.ctx=this.canvas1.getContext("2d");
+	//初始化背景
+	this.background=new Image();
+	this.background.src="images/background.jpg";
+	//开始按钮
+	this.startbutton=new Image();
+	this.startbutton.src="images/startbutton.jpg";
+}
+game.prototype.endjudge=function(){
+	//结束判定
+	//从上下屏飞出去
+	if(this.bird.position<-100||this.bird.position>100)this.state=2;
+	//撞到柱子上
+	for (var i=0;i<4;i++){
+		if(Math.abs(this.pipe.position[i]+25-75)<50){
+			if(225+this.bird.position/100*250<this.pipe.height[i]-200)this.state=2;
+			if(225+this.bird.position/100*250+50>this.pipe.height[i])this.state=2;
+		}
+	}
+}
+game.prototype.render=function(){
+	//渲染画面
+	switch(this.state){
+		
+		case 0:
+		this.ctx.drawImage(this.startbutton,200,200,100,100);
+		
+		break;
+		case 1:
+		//画背景
+		this.ctx.drawImage(this.background,-this.counter%500,0,500,500);
+		//让背景循环，也就是在右边再画一张
+		this.ctx.drawImage(this.background,-this.counter%500+500,0,500,500);
+		//渲染小鸟
+		this.ctx.save();
+		this.ctx.translate(75,250+this.bird.position/100*250,50,50);
+		this.ctx.rotate(1/8*Math.PI*this.bird.speed/3);
+		this.ctx.drawImage(this.bird.image,-25,-25,50,50);
+		this.ctx.restore();
+		//this.ctx.drawImage(this.bird.image,50,225+this.bird.position/100*250,50,50);
+		//渲染柱子
+		for(var i=0;i<4;i++){
+			this.ctx.drawImage(this.pipe.image,this.pipe.position[i],this.pipe.height[i],50,250);
+			//旋转180°
+			this.ctx.save();
+			this.ctx.translate(this.pipe.position[i]+25,this.pipe.height[i]-100);
+			this.ctx.rotate(Math.PI);
+			this.ctx.drawImage(this.pipe.image,-25,100,50,250);
+			this.ctx.restore();
+		}
+		break;
+		case 2:
+		this.ctx.font="bold 50px 宋体";
+		this.ctx.fillText("死了！点击重来",100,225);
+		break;
+	}
+}
+
+
+game.prototype.zhen=function(GAME){
+	//每一针执行的内容
+	//计算小鸟的位置
+	if(this.state==1){
+		this.bird.position+=this.bird.speed;
+		this.bird.speed+=this.bird.acc;
+		for(var i=0;i<4;i++){
+			this.pipe.position[i]=this.pipe.position[i]-3;
+		}
+		for(var i=0;i<4;i++){
+			if(this.pipe.position[i]<-50){
+			this.pipe.position[i]=Math.max.apply({},this.pipe.position)+150;
+			this.pipe.height[i]=300+100*Math.random();
+			}
+		}
+	}
+	this.endjudge();
+	//渲染
+	GAME.render();
+	if(this.state==1)GAME.counter=(GAME.counter+1)%30000;
+	window.webkitRequestAnimationFrame(function(){GAME.zhen(GAME)});
+}
+
+window.onload=function(){
+	var GAME=new game();
+	GAME.init();
+	//增加按键事件
+	document.addEventListener('keydown',function(ev){
+		//这里有些奇怪，以后再研究研究，涉及到js的scoping
+		if(ev.keyCode==74)GAME.bird.speed=-3;
+		ev.preventDefault();
+		},false);
+	//增加鼠标事件
+	GAME.canvas1.addEventListener("click",function(ev){
+		if(GAME.state==0){
+			if(ev.offsetX>=200&&ev.offsetX<=300&&ev.offsetY>=200&&ev.offsetY<=300) GAME.state=1;
+		}
+		if(GAME.state==2){
+			GAME.bird.position=0;
+			GAME.bird.speed=0;
+			GAME.state=1;
+			GAME.pipe.position=[500,650,800,950];
+			GAME.pipe.height=new Array();
+			for (var i=0;i<4;i++)GAME.pipe.height[i]=300+100*Math.random();
+			}
+		
+	},false);
+	
+	 window.webkitRequestAnimationFrame(function(){GAME.zhen(GAME)});
+}
+
+</script>
+
+
+</head>
+<body>
+	<canvas id="canvas1" width="500"height="500" style="margin:10px 10px;border:1px solid black;"></canvas>
+</body>
+</html>
