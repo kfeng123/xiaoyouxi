@@ -1,25 +1,25 @@
 game.prototype.renderobject=function(id,img,sx,sy,swidth,sheight,x,y,width,height){
-//构造渲染队列中的对象.参考drawImage方法。
+//构造渲染队列中的渲染对象.参考drawImage方法。
 	var a=new Object();
 	a={id:id,img:img,sx:sx,sy:sy,swidth:swidth,sheight:sheight,x:x,y:y,width:width,height:height}
 	return a;
 }
-game.prototype.addrenderlist=function(role){
-	//在渲染队列中增加对象
+/* game.prototype.addrenderlist=function(){
+	//在渲染队列中增加渲染对象
 	var flag=0;
-	for(i=0;i<this.renderlist.length;i++){
+	for(var i=0;i<this.renderlist.length;i++){
 			if(this.renderlist[i].id==role.id){
 				this.renderlist[i].x=role.x;
 				this.renderlist[i].y=role.y;
 				flag=1;
 			}
-		}
-		//如果在渲染队列里没有此角色对象，就创建一个此角色对象
-		if (flag==0){
-			var a=GAME.renderobject(role.id,role.img,0,0,100,100,role.x,role.y,100,100);
-			this.renderlist.push(a);
-		}
-}
+		} 
+		//如果在渲染队列里没有此渲染对象，就创建一个渲染对象
+		
+	var a=GAME.renderobject(role.id,role.img,0,0,100,100,role.x,role.y,100,100);
+	this.renderlist.push(a);
+	
+} */
 
 game.prototype.render=function(){
 //渲染

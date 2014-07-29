@@ -22,8 +22,29 @@ game.prototype.role=function(){
 		role.under[i]=0;
 	}
 	return role;
+	
+	//在渲染队列中的位置,-1代表还没放入渲染队列
+	role.whichrender=-1;
 	//不用json了
 	//return{id:id,life:life,x:x,y:y,img:img,speed:speed,left:false,right:false,jump:false,jumpstate:false,understation:[]};
+}
+
+game.prototype.createzhujue=function(){
+	this.zhujue=this.role();
+	this.zhujue.id="zhujue";
+	this.zhujue.life=100;
+	this.zhujue.x=100;
+	this.zhujue.y=0;
+	this.zhujue.img=renzhe;
+	this.zhujue.speed=5;
+	this.zhujue.acc=1;
+	//一开始在空中
+	this.zhujue.jumpstate=-1;
+	//初始化哪块平台在主角下面
+	for(var i=0;i<this.station.length;i++){
+		if(this.station[i][3]>=this.zhujue.y)this.zhujue.under[i]=1;
+		else this.zhujue.under[i]=0;
+	}
 }
 
 

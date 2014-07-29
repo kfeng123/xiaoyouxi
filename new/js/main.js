@@ -37,23 +37,9 @@ game.prototype.init=function(){
 		[2,300,600,250],
 		[3,0,300,180],
 		];
-	//主角
+	//初始化主角
+	this.createzhujue();
 	
-	this.zhujue=this.role();
-	this.zhujue.id="zhujue";
-	this.zhujue.life=100;
-	this.zhujue.x=100;
-	this.zhujue.y=0;
-	this.zhujue.img=renzhe;
-	this.zhujue.speed=5;
-	this.zhujue.acc=1;
-	//一开始在空中
-	this.zhujue.jumpstate=-1;
-	//初始化哪块平台在主角下面
-	for(var i=0;i<this.station.length;i++){
-		if(this.station[i][3]>=this.zhujue.y)this.zhujue.under[i]=1;
-		else this.zhujue.under[i]=0;
-	}
 	//开始渲染
 	//var a=GAME.renderobject("背景",haha,0,0,100,100,0,0,600,400);
 	//GAME.renderlist.push(a);
