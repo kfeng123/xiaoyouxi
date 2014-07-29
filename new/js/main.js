@@ -1,4 +1,5 @@
 var GAME=null;
+var timecounter=0;
 window.onload=function(){
 	GAME=new game();
 	GAME.init();
@@ -27,15 +28,12 @@ function game(){
 }
 
 game.prototype.init=function(){
-	var haha=new Image();
-	var renzhe=new Image();
-	haha.src="./image/background.jpg";
-	renzhe.src="./image/ww.jpg";
 	//平台数据，一个平台由4个值刻画：id:id,left:左端点；right：右端点；height：高度；
 	this.station=[
 		[1,0,600,380],
 		[2,300,600,250],
 		[3,0,300,180],
+		[4,0,300,310]
 		];
 	//初始化主角
 	this.createzhujue();

@@ -5,9 +5,37 @@ game.prototype.interval=function(){
 	//跳跃
 	this.jump(this.zhujue);
 	
-	//更新主角属性
-	this.addrenderlist(this.zhujue);
+	//更新主角渲染属性
+	this.refreshrender(this.zhujue);
+	
 }
+
+game.prototype.refreshrender=function(role){
+	//更新角色渲染属性
+	var donghua=null;
+	if(role.left){
+		donghua=role.leftdonghua;
+	}
+	else if(role.right){
+		donghua=role.rightdonghua;
+	}
+	else if(role.direction==1){
+		donghua=role.jingzhiyou;
+	}
+	else if(role.direction==-1){
+		donghua=role.jingzhizuo;
+	}
+	//设置切片
+	this.renderlist[role.whichrender].sx=donghua[Math.floor(timecounter/15)%donghua.length][0];
+	this.renderlist[role.whichrender].sy=donghua[Math.floor(timecounter/15)%donghua.length][1];
+	this.renderlist[role.whichrender].swidth=donghua[Math.floor(timecounter/15)%donghua.length][2];
+	this.renderlist[role.whichrender].sheight=donghua[Math.floor(timecounter/15)%donghua.length][3];
+	//位置
+	this.renderlist[role.whichrender].x=role.x-this.renderlist[role.whichrender].width/2;
+	this.renderlist[role.whichrender].y=role.y-this.renderlist[role.whichrender].height;
+
+}
+
 
 game.prototype.pengzhuang=function(role){
 	//碰撞检测

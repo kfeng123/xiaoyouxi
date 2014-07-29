@@ -21,12 +21,27 @@ game.prototype.role=function(){
 	for(var i=0;i<this.station.length;i++){
 		role.under[i]=0;
 	}
-	return role;
+	
+	//向左走计数，用于显示动画时用
+	leftcounter=0;
+	//向左走的动画队列
+	role.leftdonghua=new Array();
+	//向右走计数
+	rightcounter=0;
+	//向右走的动画队列
+	role.rightdonghua=new Array();
+	
+	//角色面朝的方向，-1为左，1为右
+	role.direction=1;
+	//静止面朝左的动画队列
+	role.jingzhizuo=new Array();
+	//静止面朝右的动画队列
+	role.jingzhiyou=new Array();
 	
 	//在渲染队列中的位置,-1代表还没放入渲染队列
 	role.whichrender=-1;
-	//不用json了
-	//return{id:id,life:life,x:x,y:y,img:img,speed:speed,left:false,right:false,jump:false,jumpstate:false,understation:[]};
+
+return role;
 }
 
 game.prototype.createzhujue=function(){
@@ -35,8 +50,9 @@ game.prototype.createzhujue=function(){
 	this.zhujue.life=100;
 	this.zhujue.x=100;
 	this.zhujue.y=0;
-	this.zhujue.img=renzhe;
-	this.zhujue.speed=5;
+	this.zhujue.img=new Image();
+	this.zhujue.img.src="./image/zhujue.png";
+	this.zhujue.speed=3;
 	this.zhujue.acc=1;
 	//一开始在空中
 	this.zhujue.jumpstate=-1;
@@ -45,6 +61,22 @@ game.prototype.createzhujue=function(){
 		if(this.station[i][3]>=this.zhujue.y)this.zhujue.under[i]=1;
 		else this.zhujue.under[i]=0;
 	}
+	//把主角加入到渲染队列
+	var temp=this.renderlist.push(this.renderobject(this.zhujue.id,this.zhujue.img,0,0,30,50,this.zhujue.x,this.zhujue.y,30,50));
+	this.zhujue.whichrender=temp-1;
+	//为主角增加向左走切片队列，用来显示动画效果
+	this.zhujue.leftdonghua.push([0,48,32,48]);
+	this.zhujue.leftdonghua.push([32,48,32,48]);
+	this.zhujue.leftdonghua.push([64,48,32,48]);
+	//为主角增加向右走切片队列
+	this.zhujue.rightdonghua.push([0,96,32,48]);
+	this.zhujue.rightdonghua.push([32,96,32,48]);
+	this.zhujue.rightdonghua.push([64,96,32,48]);
+	//为主角添加静止时面朝左的切片队列
+	this.zhujue.jingzhizuo.push([0,48,32,48]);
+	//为主角添加静止时面朝右的切片队列
+	this.zhujue.jingzhiyou.push([0,96,32,48]);
+	
 }
 
 

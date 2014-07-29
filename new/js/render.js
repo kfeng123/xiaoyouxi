@@ -22,6 +22,7 @@ game.prototype.renderobject=function(id,img,sx,sy,swidth,sheight,x,y,width,heigh
 } */
 
 game.prototype.render=function(){
+	timecounter++;
 //渲染
 	//游戏逻辑
 	this.interval();

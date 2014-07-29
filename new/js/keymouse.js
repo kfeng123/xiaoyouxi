@@ -3,10 +3,12 @@ game.prototype.keydown=function(ev){
 		//a
 		case 65:
 			this.zhujue.left=true;
+			this.zhujue.direction=-1;
 		break;
 		//d
 		case 68:
 			this.zhujue.right=true;
+			this.zhujue.direction=1;
 		break;
 		//k
 		case 75:
