@@ -1,0 +1,29 @@
+game.prototype.zhujueanimation=function(){    
+	//为主角增加向左走切片队列，用来显示动画效果
+	this.zhujue.leftdonghua.push([0,48,32,48]);
+	this.zhujue.leftdonghua.push([32,48,32,48]);
+	this.zhujue.leftdonghua.push([64,48,32,48]);
+	//为主角增加向右走切片队列
+	this.zhujue.rightdonghua.push([0,96,32,48]);
+	this.zhujue.rightdonghua.push([32,96,32,48]);
+	this.zhujue.rightdonghua.push([64,96,32,48]);
+	//为主角添加静止时面朝左的切片队列
+	this.zhujue.jingzhizuo.push([0,48,32,48]);
+	//为主角添加静止时面朝右的切片队列
+	this.zhujue.jingzhiyou.push([0,96,32,48]);	
+}
+
+game.prototype.enemyanimation=function(k){    
+	//为主角增加向左走切片队列，用来显示动画效果
+	this.enemy[k].leftdonghua.push([0,48,32,48]);
+	this.enemy[k].leftdonghua.push([32,48,32,48]);
+	this.enemy[k].leftdonghua.push([64,48,32,48]);
+	//为主角增加向右走切片队列
+	this.enemy[k].rightdonghua.push([0,96,32,48]);
+	this.enemy[k].rightdonghua.push([32,96,32,48]);
+	this.enemy[k].rightdonghua.push([64,96,32,48]);
+	//为主角添加静止时面朝左的切片队列
+	this.enemy[k].jingzhizuo.push([0,48,32,48]);
+	//为主角添加静止时面朝右的切片队列
+	this.enemy[k].jingzhiyou.push([0,96,32,48]);	
+}

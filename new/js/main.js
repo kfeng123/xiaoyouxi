@@ -24,7 +24,7 @@ function game(){
 		//主角
 		this.zhujue=null;
 		//敌人队列
-		this.enemy={};
+		this.enemy=new Array();
 		//视角
 		this.view={x:0,y:0};
 		//地图宽高
@@ -42,8 +42,16 @@ game.prototype.init=function(){
 		[6,900,1200,650]
 		];
 	//初始化主角
-	this.createzhujue();
+	this.zhujue=this.createzhujue();
+	this.zhujueanimation();
+	this.zhujue.img.src="./image/youyu.png";
 	
+	//初始化敌人
+	for (var i=0;i<30;i++){
+		this.enemy.push(this.createzhujue());
+		this.enemy[this.enemy.length-1].id="enemy";
+		this.enemyanimation(this.enemy.length-1); 
+	}
 	//开始渲染
 	window.webkitRequestAnimationFrame(function(){GAME.render()});
 }

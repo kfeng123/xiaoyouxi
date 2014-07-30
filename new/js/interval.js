@@ -1,12 +1,17 @@
 game.prototype.interval=function(){
 	//游戏主逻辑
+	//敌人AI
+	for(var i=0;i<this.enemy.length;i++)this.AI(this.enemy[i]);
+	
 	//行走
 	this.move(this.zhujue);
+	for(var i=0;i<this.enemy.length;i++)this.move(this.enemy[i]);
 	//跳跃
 	this.jump(this.zhujue);
-	
-	//更新主角渲染属性
+	for(var i=0;i<this.enemy.length;i++)this.jump(this.enemy[i]);
+	//更新角色渲染属性
 	this.refreshrender(this.zhujue);
+	for(var i=0;i<this.enemy.length;i++)this.refreshrender(this.enemy[i]);
 	
 }
 
