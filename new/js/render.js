@@ -26,13 +26,32 @@ game.prototype.render=function(){
 //渲染
 	//游戏逻辑
 	this.interval();
+	//转换视角
+	this.changeview();
 	//清空画布
 	this.ctx.clearRect(0,0,600,400);
 	//画地图
 	this.drawmap();
 	for (i=0;i<this.renderlist.length;i++){
-		this.ctx.drawImage(this.renderlist[i].img,this.renderlist[i].sx,this.renderlist[i].sy,this.renderlist[i].swidth,this.renderlist[i].sheight,this.renderlist[i].x,this.renderlist[i].y,this.renderlist[i].width,this.renderlist[i].height);
+		this.ctx.drawImage(this.renderlist[i].img,this.renderlist[i].sx,this.renderlist[i].sy,this.renderlist[i].swidth,this.renderlist[i].sheight,this.renderlist[i].x-this.view.x,this.renderlist[i].y-this.view.y,this.renderlist[i].width,this.renderlist[i].height);
 	}
 	window.webkitRequestAnimationFrame(function(){GAME.render()});
 }
 
+game.prototype.changeview=function(){
+	this.view.x=this.zhujue.x-300;
+	if(this.view.x<0){
+		this.view.x=0;
+	}
+	else if(this.view.x>this.mapwh.width-600){
+		this.view.x=this.mapwh.width-600;
+	}
+	this.view.y=this.zhujue.y-300;
+	if(this.view.y<0){
+		this.view.y=0;
+	}
+	else if(this.view.y>this.mapwh.height-100){
+		this.view.y=this.mapwh.width-100;
+	}
+	
+}

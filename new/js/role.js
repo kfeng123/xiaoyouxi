@@ -82,8 +82,8 @@ game.prototype.createzhujue=function(){
 
 game.prototype.move=function(role){
 	//让一个角色走
-	if(role.left)role.x-=role.speed;
-	if(role.right)role.x+=role.speed;
+	if(role.x>10)if(role.left)role.x-=role.speed;
+	if(role.x<this.mapwh.width-10)if(role.right)role.x+=role.speed;
 	//如果在平台两边走出去，状态就是下落
 	if(role.jumpstate!=-1)if(role.x>this.station[role.jumpstate][2]||role.x<this.station[role.jumpstate][1])role.jumpstate=-1;
 	

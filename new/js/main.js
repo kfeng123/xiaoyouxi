@@ -25,23 +25,25 @@ function game(){
 		this.zhujue=null;
 		//敌人队列
 		this.enemy={};
+		//视角
+		this.view={x:0,y:0};
+		//地图宽高
+		this.mapwh={width:1200,height:800};
 }
 
 game.prototype.init=function(){
 	//平台数据，一个平台由4个值刻画：id:id,left:左端点；right：右端点；height：高度；
 	this.station=[
-		[1,0,600,380],
-		[2,300,600,250],
-		[3,0,300,180],
-		[4,0,300,310]
+		[1,0,1200,780],
+		[2,300,600,650],
+		[3,0,300,580],
+		[4,0,300,710],
+		[5,600,900,710],
+		[6,900,1200,650]
 		];
 	//初始化主角
 	this.createzhujue();
 	
 	//开始渲染
-	//var a=GAME.renderobject("背景",haha,0,0,100,100,0,0,600,400);
-	//GAME.renderlist.push(a);
-	//var b=GAME.renderobject("忍者",renzhe,0,0,100,100,0,0,300,200);
-	//GAME.renderlist.push(b);
 	window.webkitRequestAnimationFrame(function(){GAME.render()});
 }
