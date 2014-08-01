@@ -45,13 +45,19 @@ game.prototype.init=function(){
 	this.zhujue=this.createzhujue();
 	this.zhujueanimation();
 	this.zhujue.img.src="./image/youyu.png";
+	//初始化主角攻击效果对象
+	this.zhujue.attack=this.createattackobj();
 	
 	//初始化敌人
 	for (var i=0;i<30;i++){
 		this.enemy.push(this.createzhujue());
 		this.enemy[this.enemy.length-1].id="enemy";
+		this.enemy[this.enemy.length-1].attack=this.createattackobj();
 		this.enemyanimation(this.enemy.length-1); 
 	}
+	
+	
+	
 	//开始渲染
 	window.webkitRequestAnimationFrame(function(){GAME.render()});
 }

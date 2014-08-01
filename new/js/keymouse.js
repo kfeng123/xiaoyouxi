@@ -14,6 +14,9 @@ game.prototype.keydown=function(ev){
 		case 75:
 			this.zhujue.jump=true;
 		break;
+		case 74:
+			this.zhujue.pressattack=true;
+		break;
 	}
 }
 game.prototype.keyup=function(ev){
@@ -30,6 +33,8 @@ game.prototype.keyup=function(ev){
 		case 75:
 			this.zhujue.jump=false;
 		break;
+		case 74:
+			this.zhujue.pressattack=false;
 	}
 }
 
