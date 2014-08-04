@@ -4,7 +4,8 @@
 	<title></title>
 	<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0,user-scalable=no">
 <style>
-#canvas1{border:1px solid black;margin:0px 0px;}
+#canvas1{border:0px solid black;margin:0px 0px;}
+body{margin:0px;}
 </style>
 <script>
 function game(){
@@ -22,6 +23,12 @@ function game(){
 	this.startblack.src="./image/startblack.png";
 	this.startyellow=new Image();
 	this.startyellow.src="./image/startyellow.png";
+	this.superblack=new Image();
+	this.superblack.src="./image/superblack.png";
+	this.startbackground=new Image();
+	this.startbackground.src="./image/startbackground.png";
+	this.endbackground=new Image();
+	this.endbackground.src="./image/endbackground.png";
 	//玩家的操作序列
 	this.wanjia=new Array();
 	//生成的块序列
@@ -34,7 +41,17 @@ function game(){
 	this.temp=0;
 	//是否在动画状态
 	this.isanimation=false;
-	
+	//分数
+	this.bonus=0;
+	//个数
+	this.geshu=0;
+	//是否是20的倍数
+	this.flag=new Array();
+	this.tempflag=0;
+	//super黑块的个数
+	this.supercounter=0;
+	//剩余时间
+	this.lasttime=6000;
 }
 
 game.prototype.draw=function(height,obj1,obj2,obj3,obj4){
@@ -60,37 +77,47 @@ game.prototype.animation=function(c){
 	for(var i=0;i<4;i++){
 		switch(this.block[i]){
 		case 1:
-		this.draw((2-i)*this.documentHeight/4+c,this.black,this.white,this.white,this.white);
+		
+		if(this.flag[i]==0)this.draw((2-i)*this.documentHeight/4+c,this.black,this.white,this.white,this.white);
+		else this.draw((2-i)*this.documentHeight/4+c,this.superblack,this.white,this.white,this.white);
 		break;
 		case 2:
 		
-		this.draw((2-i)*this.documentHeight/4+c,this.white,this.black,this.white,this.white);
+		if(this.flag[i]==0)this.draw((2-i)*this.documentHeight/4+c,this.white,this.black,this.white,this.white);
+		else this.draw((2-i)*this.documentHeight/4+c,this.white,this.superblack,this.white,this.white);
 		break;
 		case 3:
 		
-		this.draw((2-i)*this.documentHeight/4+c,this.white,this.white,this.black,this.white);
+		if(this.flag[i]==0)this.draw((2-i)*this.documentHeight/4+c,this.white,this.white,this.black,this.white);
+		else this.draw((2-i)*this.documentHeight/4+c,this.white,this.white,this.superblack,this.white);
 		break;
 		case 4:
-		this.draw((2-i)*this.documentHeight/4+c,this.white,this.white,this.white,this.black);
-		
+		if(this.flag[i]==0)this.draw((2-i)*this.documentHeight/4+c,this.white,this.white,this.white,this.black);
+		else this.draw((2-i)*this.documentHeight/4+c,this.white,this.white,this.white,this.superblack);
 		break;
 		}
 	}
 		switch(this.temp){
 		case 1:
-		this.draw(3*this.documentHeight/4+c,this.black,this.white,this.white,this.white);
+		if(this.tempflag==0)this.draw(3*this.documentHeight/4+c,this.black,this.white,this.white,this.white);
+		else this.draw(3*this.documentHeight/4+c,this.superblack,this.white,this.white,this.white);
 		break;
 		case 2:
 		
-		this.draw(3*this.documentHeight/4+c,this.white,this.black,this.white,this.white);
+		if(this.tempflag==0)this.draw(3*this.documentHeight/4+c,this.white,this.black,this.white,this.white);
+		else this.draw(3*this.documentHeight/4+c,this.white,this.superblack,this.white,this.white);
 		break;
 		case 3:
 		
-		this.draw(3*this.documentHeight/4+c,this.white,this.white,this.black,this.white);
+		if(this.tempflag==0)this.draw(3*this.documentHeight/4+c,this.white,this.white,this.black,this.white);
+		else this.draw(3*this.documentHeight/4+c,this.white,this.white,this.superblack,this.white);
 		break;
 		case 4:
-		this.draw(3*this.documentHeight/4+c,this.white,this.white,this.white,this.black);
-		
+		if(this.tempflag==0) this.draw(3*this.documentHeight/4+c,this.white,this.white,this.white,this.black);
+		else this.draw(3*this.documentHeight/4+c,this.white,this.white,this.white,this.superblack);
+		break;
+		case 0:
+		this.draw(3*this.documentHeight/4+c,this.startyellow,this.startyellow,this.startyellow,this.startyellow);
 		break;
 		}
 	
@@ -98,9 +125,11 @@ game.prototype.animation=function(c){
 
 
 game.prototype.zhen=function(GAME){
+	
+
 	//游戏主循环
 	if(this.isanimation){
-		if(this.counter==5){this.counter=0;this.temp=this.block.shift();this.isanimation=false;}
+		if(this.counter==5){this.counter=0;this.temp=this.block.shift();this.tempflag=this.flag.shift();this.isanimation=false;}
 		else{
 		this.counter++;
 		this.animation(this.documentHeight/4/5*this.counter);
@@ -112,9 +141,9 @@ game.prototype.zhen=function(GAME){
 	if(!this.isanimation){
 			//如果不是在动画状态，执行逻辑
 			this.animation(0);
-			if(this.block.length<20){
+			if(this.block.length<100){
 				//增加白块
-				for(var i=this.block.length;i<20;i++){
+				for(var i=this.block.length;i<100;i++){
 					var k;
 					var lyq=Math.random();
 					if(lyq<1/4)k=1;
@@ -123,31 +152,54 @@ game.prototype.zhen=function(GAME){
 					else k=4;
 					this.block.push(k);
 				}
+				
+				for(var i=0;i<100;i++){
+					this.flag[i+20]=this.flag[i];
+				}
 			}
 		if(this.wanjia.length){
 			var haha=this.wanjia.shift();
 			if(haha==this.block[0]){
 				//成功触碰到黑块，开启动画状态
-				//this.temp=this.block.shift();
 				this.counter=0;
 				this.isanimation=true;
-				
+				this.bonus+=100;
+				if(this.flag[0])this.supercounter++;
 			}
 			else{
 				//触碰到白块,游戏结束
+				this.gameover();
 				return;
 			}
 			
 		} 
 	}
+	//时间
+	var nowtime=new Date();
+	this.lasttime=60000-(nowtime.getTime()-this.date.getTime());
+	if(this.lasttime<=0)this.lasttime=0;
+	this.ctx.font="bold 20px 宋体";
+	this.ctx.fillStyle="red";
+	this.ctx.fillText(this.lasttime/1000,this.documentWidth/2-20,20);
+	if(this.lasttime==0){this.gameover();return;}
 	window.webkitRequestAnimationFrame(function(){GAME.zhen(GAME)});
 }
 
+game.prototype.gameover=function(){
+	this.ctx.drawImage(this.endbackground,0,0,this.documentWidth,this.documentHeight);
+	this.canvas1.addEventListener('touchstart',playagain);
+	var G=this;
+	function playagain(ev){
+		G.canvas1.removeEventListener('touchstart',playagain);
+		var GAME=new game();
+		startgame(GAME);
+	}
+}
 
-window.onload=function(){
-	var GAME=new game();
+function startgame(GAME){
+
 	GAME.canvas1.addEventListener('touchstart',function(ev){GAME.touch(ev);});
-				for(var i=GAME.block.length;i<20;i++){
+				for(var i=0;i<20;i++){
 					var k;
 					var lyq=Math.random();
 					if(lyq<1/4)k=1;
@@ -155,12 +207,30 @@ window.onload=function(){
 					else if(lyq<3/4)k=3;
 					else k=4;
 					GAME.block.push(k);
+					if(i!=19)GAME.flag.push(0);
+					else GAME.flag.push(1);
 				}
 	counter=0;
+	GAME.date=new Date();
+	
 	window.webkitRequestAnimationFrame(function(){GAME.zhen(GAME)});
 	
-
 }
+
+window.onload=function(){
+	var GAME=new game();
+	GAME.startbackground.onload=function(){
+	GAME.ctx.drawImage(GAME.startbackground,0,0,GAME.documentWidth,GAME.documentHeight);
+	}
+	GAME.canvas1.addEventListener('touchstart',kaishidianji);
+	function kaishidianji(ev){
+		GAME.canvas1.removeEventListener('touchstart',kaishidianji);
+		startgame(GAME);
+
+	}
+	
+}
+
 </script>
 </head>
 <body>
