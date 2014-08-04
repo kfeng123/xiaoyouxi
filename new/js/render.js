@@ -1,7 +1,8 @@
 game.prototype.renderobject=function(id,img,sx,sy,swidth,sheight,x,y,width,height){
 //构造渲染队列中的渲染对象.参考drawImage方法。
+//加入一个逻辑变量，判断这个对象是否已经为空了，（用于达到删除渲染对象的目的）
 	var a=new Object();
-	a={id:id,img:img,sx:sx,sy:sy,swidth:swidth,sheight:sheight,x:x,y:y,width:width,height:height}
+	a={id:id,img:img,sx:sx,sy:sy,swidth:swidth,sheight:sheight,x:x,y:y,width:width,height:height,isempty:false}
 	return a;
 }
 /* game.prototype.addrenderlist=function(){
@@ -34,7 +35,9 @@ game.prototype.render=function(){
 	this.drawmap();
 	//渲染
 	for (i=0;i<this.renderlist.length;i++){
-		this.ctx.drawImage(this.renderlist[i].img,this.renderlist[i].sx,this.renderlist[i].sy,this.renderlist[i].swidth,this.renderlist[i].sheight,this.renderlist[i].x-this.view.x,this.renderlist[i].y-this.view.y,this.renderlist[i].width,this.renderlist[i].height);
+		if(!this.renderlist[i].isempty){
+			this.ctx.drawImage(this.renderlist[i].img,this.renderlist[i].sx,this.renderlist[i].sy,this.renderlist[i].swidth,this.renderlist[i].sheight,this.renderlist[i].x-this.view.x,this.renderlist[i].y-this.view.y,this.renderlist[i].width,this.renderlist[i].height);
+		}
 	}
 	window.webkitRequestAnimationFrame(function(){GAME.render()});
 }

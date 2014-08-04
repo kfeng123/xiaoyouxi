@@ -8,9 +8,13 @@ game.prototype.role=function(){
 	role.img=null;
 	role.speed=null;
 	role.acc=null;
+	//是否按着左键
 	role.left=false;
 	role.right=false;
 	role.jump=false;
+	role.attack=null;
+	//是否按着攻击键
+	role.pressattack=false;
 	role.jumpstate=-1;
 	//竖直的速度
 	role.hspeed=null;
@@ -72,6 +76,7 @@ game.prototype.createzhujue=function(){
 	
 }
 game.prototype.move=function(role){
+	if(role.ifattack)return;
 	//让一个角色走
 	if(role.x>10)if(role.left)role.x-=role.speed;
 	if(role.x<this.mapwh.width-10)if(role.right)role.x+=role.speed;
@@ -80,7 +85,8 @@ game.prototype.move=function(role){
 	
 	
 }
-game.prototype.jump=function(role){	
+game.prototype.jump=function(role){
+	if(role.ifattack)return;
 			//如果在空中，那么就自由下落
 	if(role.jumpstate==-1){
 		//下降

@@ -27,3 +27,4 @@ game.prototype.enemyanimation=function(k){
 	//为主角添加静止时面朝右的切片队列
 	this.enemy[k].jingzhiyou.push([0,96,32,48]);	
 }
+
