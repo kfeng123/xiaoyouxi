@@ -21,10 +21,10 @@ function game(){
 	
 	this.keywords=document.getElementsByTagName("meta")[2];
 	this.audio=document.getElementById("press");
-	//this.documentWidth=$(window).width();
-	//this.documentHeight=17/20*$(window).height();
-	this.documentWidth=window.screen.availWidth;
-	this.documentHeight=window.screen.availHeight;
+	this.documentWidth=$(window).width();
+	this.documentHeight=17/20*$(window).height();
+	//this.documentWidth=window.screen.availWidth;
+	//this.documentHeight=window.screen.availHeight;
 	
 	this.canvas1=document.getElementById("canvas1");
 	this.canvas1.width=this.documentWidth;
