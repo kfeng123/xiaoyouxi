@@ -286,8 +286,7 @@ window.onload=function(){
 	
 	GAME.canvas1.addEventListener('touchstart',kaishidianji);
 	function kaishidianji(ev){
-		
-		GAME.ctx.drawImage(GAME.startyellow,100,100);
+		alert("haha");
 		if(ev.touches[0].pageX>=10/32*GAME.documentWidth&&ev.touches[0].pageX<=22/32*GAME.documentWidth&&ev.touches[0].pageY>=8/12*GAME.documentHeight&&ev.touches[0].pageY<=9/12*GAME.documentHeight){
 		//点击开始游戏
 			
