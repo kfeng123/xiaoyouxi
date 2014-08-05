@@ -266,6 +266,11 @@ function startgame(GAME){
 				}
 	counter=0;
 	GAME.date=new Date();
+	this.ctx.font="bold 20px 宋体";
+	this.ctx.fillStyle="black";
+	this.ctx.textAlign="center";
+	this.ctx.fillText("我打下了",this.documentWidth/2,5/12*this.documentHeight);
+	
 	
 	window.webkitRequestAnimationFrame(function(){GAME.zhen(GAME)});
 	
@@ -289,7 +294,7 @@ window.onload=function(){
 	
 		if(ev.touches[0].pageX>=10/32*GAME.documentWidth&&ev.touches[0].pageX<=22/32*GAME.documentWidth&&ev.touches[0].pageY>=8/12*GAME.documentHeight&&ev.touches[0].pageY<=9/12*GAME.documentHeight){
 		//点击开始游戏
-		//	GAME.canvas1.removeEventListener('touchstart',kaishidianji);
+			GAME.canvas1.removeEventListener('touchstart',kaishidianji);
 			
 		
 			startgame(GAME);
