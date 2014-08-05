@@ -5,7 +5,7 @@
 	<meta name="description" content="">
 	<meta name="keywords" content="">
 	<title></title>
-	<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0,mininum-scale=1,maximum-scale=1">
+	<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0,mininum-scale=1,maximum-scale=1,user-scalable=no">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta http-equiv="Pragma" content="no-cache">
@@ -23,7 +23,7 @@ function game(){
 	//this.documentWidth=$(window).width();
 	//this.documentHeight=17/20*$(window).height();
 	this.documentWidth=window.screen.availWidth;
-	this.documentHeight=window.screen.availHeight;
+	this.documentHeight=15/20*window.screen.availHeight;
 	
 	this.canvas1=document.getElementById("canvas1");
 	this.canvas1.width=this.documentWidth;
