@@ -266,10 +266,10 @@ function startgame(GAME){
 				}
 	counter=0;
 	GAME.date=new Date();
-	this.ctx.font="bold 20px 宋体";
-	this.ctx.fillStyle="black";
-	this.ctx.textAlign="center";
-	this.ctx.fillText("我打下了",this.documentWidth/2,5/12*this.documentHeight);
+	GAME.ctx.font="bold 20px 宋体";
+	GAME.ctx.fillStyle="black";
+	GAME.ctx.textAlign="center";
+	GAME.ctx.fillText("我打下了",GAME.documentWidth/2,5/12*GAME.documentHeight);
 	
 	
 	window.webkitRequestAnimationFrame(function(){GAME.zhen(GAME)});
