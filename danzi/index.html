@@ -5,8 +5,11 @@
 	<meta name="description" content="">
 	<meta name="keywords" content="">
 	<title></title>
-	<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0,mininum-scale=1,maximum-scale=1,user-scalable=no">
+	<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0,mininum-scale=1,maximum-scale=1">
 	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
 <style>
 #canvas1{border:0px solid black;margin:0px 0px;}
 body{margin:0px;}
@@ -17,8 +20,8 @@ function game(){
 	
 	this.keywords=document.getElementsByTagName("meta")[2];
 	this.audio=document.getElementById("press");
-	this.documentWidth=window.screen.availWidth;
-	this.documentHeight=17/20*window.screen.availHeight;
+	this.documentWidth=getWidth();
+	this.documentHeight=17/20*getHeight();
 	this.canvas1=document.getElementById("canvas1");
 	this.canvas1.width=this.documentWidth;
 	this.canvas1.height=this.documentHeight;
@@ -289,7 +292,7 @@ window.onload=function(){
 	GAME.canvas1.addEventListener('touchstart',kaishidianji);
 	function kaishidianji(ev){
 		
-			alert(GAME.documentWidth);
+		
 		if(ev.touches[0].pageX>=10/32*GAME.documentWidth&&ev.touches[0].pageX<=22/32*GAME.documentWidth&&ev.touches[0].pageY>=8/12*GAME.documentHeight&&ev.touches[0].pageY<=9/12*GAME.documentHeight){
 		//点击开始游戏
 			GAME.canvas1.removeEventListener('touchstart',kaishidianji);
