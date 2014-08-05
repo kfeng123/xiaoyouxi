@@ -22,11 +22,10 @@ function game(){
 	this.audio=document.getElementById("press");
 	this.documentWidth=$(window).width();
 	this.documentHeight=17/20*$(window).height();
-	alert(this.documentWidth);
 	//this.documentWidth=window.screen.availWidth;
 	//this.documentHeight=15/20*window.screen.availHeight;
 	
-	/*this.canvas1=document.getElementById("canvas1");
+	this.canvas1=document.getElementById("canvas1");
 	this.canvas1.width=this.documentWidth;
 	this.canvas1.height=this.documentHeight;
 	this.ctx=this.canvas1.getContext("2d");
@@ -78,16 +77,16 @@ function game(){
 	//super黑块的个数
 	this.supercounter=0;
 	//剩余时间
-	this.lasttime=6000;*/
+	this.lasttime=6000;
 }
 window.onload=function(){
 	var GAME=new game();
 	
-	/*		
+	
 	GAME.startbackground.onload=function(){
 	GAME.ctx.drawImage(GAME.startbackground,0,0,GAME.documentWidth,GAME.documentHeight);
 	}
-	GAME.startbutton.onload=function(){
+	/*GAME.startbutton.onload=function(){
 		GAME.ctx.drawImage(GAME.startbutton,10/32*GAME.documentWidth,8/12*GAME.documentHeight,12/32*GAME.documentWidth,1/12*GAME.documentHeight);
 	}
 	GAME.moregame.onload=function(){
