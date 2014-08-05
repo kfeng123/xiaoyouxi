@@ -275,7 +275,7 @@ function startgame(GAME){
 window.onload=function(){
 	var GAME=new game();
 	
-			alert(GAME.documentWidth);
+			
 	GAME.startbackground.onload=function(){
 	GAME.ctx.drawImage(GAME.startbackground,0,0,GAME.documentWidth,GAME.documentHeight);
 	}
@@ -289,6 +289,7 @@ window.onload=function(){
 	GAME.canvas1.addEventListener('touchstart',kaishidianji);
 	function kaishidianji(ev){
 		
+			alert(GAME.documentWidth);
 		if(ev.touches[0].pageX>=10/32*GAME.documentWidth&&ev.touches[0].pageX<=22/32*GAME.documentWidth&&ev.touches[0].pageY>=8/12*GAME.documentHeight&&ev.touches[0].pageY<=9/12*GAME.documentHeight){
 		//点击开始游戏
 			GAME.canvas1.removeEventListener('touchstart',kaishidianji);
