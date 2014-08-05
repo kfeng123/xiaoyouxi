@@ -217,7 +217,7 @@ game.prototype.zhen=function(GAME){
 	this.ctx.fillText(Math.round(this.lasttime/1000),this.documentWidth/2,30);
 	if(this.lasttime==0){this.gameover();return;}
 	//window.webkitRequestAnimationFrame(function(){GAME.zhen(GAME)});
-	setTimeout(function(){GAME.zhen(GAME);},15);
+	setTimeout(function(){GAME.zhen(GAME);},1);
 }
 
 game.prototype.gameover=function(){
@@ -276,7 +276,7 @@ function startgame(GAME){
 	
 	
 	//window.webkitRequestAnimationFrame(function(){GAME.zhen(GAME)});
-	setTimeout(function(){GAME.zhen(GAME);},15);
+	setTimeout(function(){GAME.zhen(GAME);},1);
 }
 
 window.onload=function(){
