@@ -24,6 +24,8 @@ function game(){
 	this.documentHeight=17/20*$(window).height();
 	//this.documentWidth=window.screen.availWidth;
 	//this.documentHeight=15/20*window.screen.availHeight;
+	this.div=document.getElementById("div");
+	this.div.innerHTML=this.documentWidth+' '+this.documentHeight;
 	/*
 	this.canvas1=document.getElementById("canvas1");
 	this.canvas1.width=this.documentWidth;
@@ -113,6 +115,7 @@ window.onload=function(){
 
 </head>
 <body>
+<div id="div"></div>
 <canvas id="canvas1"></canvas>
 
 <audio id="press">
