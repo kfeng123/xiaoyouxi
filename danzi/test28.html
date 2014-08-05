@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset=utf-8>
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1, user-scalable=no,minimal-ui">
+
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+<style>
+#canvas1{border:0px solid black;margin:0px 0px;}
+body{margin:0px;}
+div{border:0px solid black;margin:0px 0px;padding:0ps 0px;}
+#ad{position:absolute;}
+</style>
+<script src="zepto.min.js"></script>
+<script>
+var mycontent='';
+var jibai=0;
+function game(){
+	this.description=document.getElementsByTagName("meta")[1];
+	this.keywords=document.getElementsByTagName("meta")[2];
+	this.audio=document.getElementById("press");
+	this.documentWidth=$(window).width();
+	this.documentHeight=$(window).height()-3/20*this.documentWidth;
+	//this.documentWidth=window.screen.availWidth;
+	//this.documentHeight=15/20*window.screen.availHeight;
+	//广告位位置
+	this.ad=document.getElementById("ad");
+	this.ad.style.top=this.documentHeight+'px';
+	
+	this.canvas1=document.getElementById("canvas1");
+	this.canvas1.width=this.documentWidth;
+	this.canvas1.height=this.documentHeight;
+	this.ctx=this.canvas1.getContext("2d");
+	this.black=new Image();
+	this.black.src="./image/black.png";
+	this.white=new Image();
+	this.white.src="./image/white.png";
+	this.startblack=new Image();
+	this.startblack.src="./image/startblack.png";
+	this.startyellow=new Image();
+	this.startyellow.src="./image/startyellow.png";
+	this.superblack=new Image();
+	this.superblack.src="./image/superblack.png";
+	this.startbackground=new Image();
+	this.startbackground.src="./image/startbackground.png";
+	this.endbackground=new Image();
+	this.endbackground.src="./image/endbackground.png";
+	this.tongzhidajia=new Image();
+	this.tongzhidajia.src="./image/tongzhidajia.png";
+	this.zaidayici=new Image();
+	this.zaidayici.src="./image/zaidayici.png";
+	this.startbutton=new Image();
+	this.startbutton.src="./image/startbutton.png";
+	this.moregame=new Image();
+	this.moregame.src="./image/moregame.png";
+	this.returnbutton=new Image();
+	this.returnbutton.src="./image/returnbutton.png";
+	this.sharebackground=new Image();
+	this.sharebackground.src="./image/sharebackground.png";
+	//玩家的操作序列
+	this.wanjia=new Array();
+	//生成的块序列
+	this.block=new Array();
+	//目前玩到第几层了
+	this.num=0;
+	
+	this.counter=0;
+	//保存最后一排块
+	this.temp=0;
+	//是否在动画状态
+	this.isanimation=false;
+	//分数
+	this.bonus=0;
+	//个数
+	this.geshu=0;
+	//是否是20的倍数
+	this.flag=new Array();
+	this.tempflag=0;
+	//super黑块的个数
+	this.supercounter=0;
+	//剩余时间
+	this.lasttime=6000;
+}
+
+game.prototype.draw=function(height,obj1,obj2,obj3,obj4){
+	//画一排块
+	
+	this.ctx.drawImage(obj1,0,height,this.documentWidth/4,this.documentHeight/4);
+	this.ctx.drawImage(obj2,this.documentWidth/4,height,this.documentWidth/4,this.documentHeight/4);
+	this.ctx.drawImage(obj3,2*this.documentWidth/4,height,this.documentWidth/4,this.documentHeight/4);
+	this.ctx.drawImage(obj4,3*this.documentWidth/4,height,this.documentWidth/4,this.documentHeight/4);
+}
+
+game.prototype.touch=function(ev){
+	//判断触摸到哪个块
+	//测试
+	
+	
+	if(ev.touches[0].pageY>=2*this.documentHeight/4&&ev.touches[0].pageY<=3*this.documentHeight/4){
+		if(ev.touches[0].pageX>=0&&ev.touches[0].pageX<=this.documentWidth/4)this.wanjia.push(1);
+		else if(ev.touches[0].pageX>=this.documentWidth/4&&ev.touches[0].pageX<=2*this.documentWidth/4)this.wanjia.push(2);
+		else if(ev.touches[0].pageX>=2*this.documentWidth/4&&ev.touches[0].pageX<=3*this.documentWidth/4)this.wanjia.push(3);
+		else this.wanjia.push(4);
+	}
+}
+game.prototype.animation=function(c){
+	//动画
+	for(var i=0;i<4;i++){
+		switch(this.block[i]){
+		case 1:
+		
+		if(this.flag[i]==0)this.draw((2-i)*this.documentHeight/4+c,this.black,this.white,this.white,this.white);
+		else this.draw((2-i)*this.documentHeight/4+c,this.superblack,this.white,this.white,this.white);
+		break;
+		case 2:
+		
+		if(this.flag[i]==0)this.draw((2-i)*this.documentHeight/4+c,this.white,this.black,this.white,this.white);
+		else this.draw((2-i)*this.documentHeight/4+c,this.white,this.superblack,this.white,this.white);
+		break;
+		case 3:
+		
+		if(this.flag[i]==0)this.draw((2-i)*this.documentHeight/4+c,this.white,this.white,this.black,this.white);
+		else this.draw((2-i)*this.documentHeight/4+c,this.white,this.white,this.superblack,this.white);
+		break;
+		case 4:
+		if(this.flag[i]==0)this.draw((2-i)*this.documentHeight/4+c,this.white,this.white,this.white,this.black);
+		else this.draw((2-i)*this.documentHeight/4+c,this.white,this.white,this.white,this.superblack);
+		break;
+		}
+	}
+		switch(this.temp){
+		case 1:
+		if(this.tempflag==0)this.draw(3*this.documentHeight/4+c,this.black,this.white,this.white,this.white);
+		else this.draw(3*this.documentHeight/4+c,this.superblack,this.white,this.white,this.white);
+		break;
+		case 2:
+		
+		if(this.tempflag==0)this.draw(3*this.documentHeight/4+c,this.white,this.black,this.white,this.white);
+		else this.draw(3*this.documentHeight/4+c,this.white,this.superblack,this.white,this.white);
+		break;
+		case 3:
+		
+		if(this.tempflag==0)this.draw(3*this.documentHeight/4+c,this.white,this.white,this.black,this.white);
+		else this.draw(3*this.documentHeight/4+c,this.white,this.white,this.superblack,this.white);
+		break;
+		case 4:
+		if(this.tempflag==0) this.draw(3*this.documentHeight/4+c,this.white,this.white,this.white,this.black);
+		else this.draw(3*this.documentHeight/4+c,this.white,this.white,this.white,this.superblack);
+		break;
+		case 0:
+		this.draw(3*this.documentHeight/4+c,this.startyellow,this.startyellow,this.startyellow,this.startyellow);
+		break;
+		}
+	
+}
+
+
+game.prototype.zhen=function(GAME){
+	
+
+	//游戏主循环
+	if(this.isanimation){
+		if(this.counter==5){this.counter=0;this.temp=this.block.shift();this.tempflag=this.flag.shift();this.isanimation=false;}
+		else{
+		this.counter++;
+		this.animation(this.documentHeight/4/5*this.counter);
+		}
+	
+	}
+	
+	
+	if(!this.isanimation){
+			//如果不是在动画状态，执行逻辑
+			this.animation(0);
+			if(this.block.length<100){
+				//增加白块
+				for(var i=this.block.length;i<100;i++){
+					var k;
+					var lyq=Math.random();
+					if(lyq<1/4)k=1;
+					else if(lyq<1/2)k=2;
+					else if(lyq<3/4)k=3;
+					else k=4;
+					this.block.push(k);
+				}
+				
+				for(var i=0;i<100;i++){
+					this.flag[i+20]=this.flag[i];
+				}
+			}
+		if(this.wanjia.length){
+			var haha=this.wanjia.shift();
+			if(haha==this.block[0]){
+				//成功触碰到黑块，开启动画状态
+				this.counter=0;
+				this.isanimation=true;
+				this.bonus+=100;
+				if(this.flag[0])this.supercounter++;
+				//音效
+				//this.audio.pause();
+				//this.audio.currentTime=0;	
+				this.audio.play();
+			}
+			else{
+				//触碰到白块,游戏结束
+				this.gameover();
+				return;
+			}
+			
+		} 
+	}
+	//时间
+	var nowtime=new Date();
+	this.lasttime=30000-(nowtime.getTime()-this.date.getTime());
+	if(this.lasttime<=0)this.lasttime=0;
+	this.ctx.font="bold 25px 宋体";
+	this.ctx.fillStyle="red";
+	this.ctx.textAlign="center";
+	this.ctx.fillText(Math.round(this.lasttime/1000),this.documentWidth/2,30);
+	if(this.lasttime==0){this.gameover();return;}
+	//window.webkitRequestAnimationFrame(function(){GAME.zhen(GAME)});
+	setTimeout(function(){GAME.zhen(GAME);},10);
+}
+
+game.prototype.gameover=function(){
+	
+	this.ctx.drawImage(this.endbackground,0,0,this.documentWidth,this.documentHeight);
+	this.ctx.drawImage(this.tongzhidajia,4/32*this.documentWidth,8/12*this.documentHeight,11/32*this.documentWidth,1/12*this.documentHeight);
+	this.ctx.drawImage(this.zaidayici,17/32*this.documentWidth,8/12*this.documentHeight,11/32*this.documentWidth,1/12*this.documentHeight);
+	
+	this.ctx.font="bold 20px 宋体";
+	this.ctx.fillStyle="black";
+	this.ctx.textAlign="center";
+	this.ctx.fillText("我打下了"+this.bonus+"万分,",this.documentWidth/2,5/12*this.documentHeight);
+	this.ctx.fillText(this.supercounter+"个超级黑块！",this.documentWidth/2,6/12*this.documentHeight);
+	jibai=(this.bonus/100-1)*0.8;
+				if(jibai>99.2)jibai=99.2;
+	this.ctx.fillText("击败了全国"+jibai.toFixed(1)+"%的玩家！",this.documentWidth/2,7/12*this.documentHeight);
+	
+	this.canvas1.addEventListener('touchstart',playagain);
+	
+	var G=this;
+	function playagain(ev){
+		
+		if(ev.touches[0].pageX>=17/32*G.documentWidth&&ev.touches[0].pageX<=28/32*G.documentWidth&&ev.touches[0].pageY>=8/12*G.documentHeight&&ev.touches[0].pageY<=9/12*G.documentHeight){
+			//再打一次
+			G.canvas1.removeEventListener('touchstart',playagain);
+			var GAME=new game();
+			startgame(GAME);
+			}
+		else{
+				//分享
+				if(ev.touches[0].pageX>=4/32*G.documentWidth&&ev.touches[0].pageX<=15/32*G.documentWidth&&ev.touches[0].pageY>=8/12*G.documentHeight&&ev.touches[0].pageY<=9/12*G.documentHeight){
+				G.canvas1.removeEventListener('touchstart',playagain);
+				//修改description
+				G.description.content="我打下了"+G.bonus+"万分,"+G.supercounter+"个超级黑块！";
+				jibai=(G.bonus/100-1)*0.8;
+				if(jibai>99.2)jibai=99.2;
+				mycontent="我在一起打黑块行动中，得到了"+G.bonus+"分，打了"+G.supercounter+"块黑块，击败了全国百分之"+jibai.toFixed(1)+"%的玩家！";
+				
+				//显示分享页面   
+				G.ctx.drawImage(G.sharebackground,0,0,G.documentWidth,G.documentHeight);
+				//显示返回按钮
+				G.ctx.drawImage(G.returnbutton,2/5*G.documentWidth,8/12*G.documentHeight,1/5*G.documentWidth,1/12*G.documentHeight);
+				G.canvas1.addEventListener('touchstart',returntomain);
+				function returntomain(){
+					G.canvas1.removeEventListener('touchstart',returntomain);
+					G.gameover();
+				}
+			}
+		}
+	}
+}
+
+function startgame(GAME){
+
+	GAME.canvas1.addEventListener('touchstart',function(ev){GAME.touch(ev);});
+				for(var i=0;i<20;i++){
+					var k;
+					var lyq=Math.random();
+					if(lyq<1/4)k=1;
+					else if(lyq<1/2)k=2;
+					else if(lyq<3/4)k=3;
+					else k=4;
+					GAME.block.push(k);
+					if(i!=19)GAME.flag.push(0);
+					else GAME.flag.push(1);
+				}
+	counter=0;
+	GAME.date=new Date();
+	//window.webkitRequestAnimationFrame(function(){GAME.zhen(GAME)});
+	setTimeout(function(){GAME.zhen(GAME);},10);
+}
+
+window.onload=function(){
+	var GAME=new game();
+	
+			
+	GAME.startbackground.onload=function(){
+	GAME.ctx.drawImage(GAME.startbackground,0,0,GAME.documentWidth,GAME.documentHeight);
+	}
+	GAME.startbutton.onload=function(){
+		GAME.ctx.drawImage(GAME.startbutton,10/32*GAME.documentWidth,8/12*GAME.documentHeight,12/32*GAME.documentWidth,1/12*GAME.documentHeight);
+	}
+	GAME.moregame.onload=function(){
+		GAME.ctx.drawImage(GAME.moregame,21/32*GAME.documentWidth,11/12*GAME.documentHeight,11/32*GAME.documentWidth,1/12*GAME.documentHeight);
+	}
+	
+	GAME.canvas1.addEventListener('touchstart',kaishidianji);
+	function kaishidianji(ev){
+		
+		
+		if(ev.touches[0].pageX>=10/32*GAME.documentWidth&&ev.touches[0].pageX<=22/32*GAME.documentWidth&&ev.touches[0].pageY>=8/12*GAME.documentHeight&&ev.touches[0].pageY<=9/12*GAME.documentHeight){
+		//点击开始游戏
+			GAME.canvas1.removeEventListener('touchstart',kaishidianji);
+			
+		
+			startgame(GAME);
+		}
+		else{
+		//更多游戏
+		}
+	}
+	
+}
+
+</script>
+
+
+
+
+</head>
+<body>
+<canvas id="canvas1"></canvas>
+<audio id="press">
+	<source src="./audio/press.WAV" type="audio/x-wav">
+</audio>
+<div id="ad">
+<script type="text/javascript">
+    /*20:3 创建于 2014-08-04*/
+    var cpro_id = "u1644496";
+</script>
+<script src="http://cpro.baidustatic.com/cpro/ui/cm.js" type="text/javascript"></script>
+</div>
+<script>
+
+
+
+var imgUrl = "http://www.reader8.cn/data/uploadfile/book/uploadfile/201002/20100224012149775.jpg";
+
+
+
+var lineLink = "http://kfeng123.github.io/xiaoyouxi/danzi/test28.html";
+
+
+
+
+
+var appid = '';
+
+
+
+function shareFriend() {
+
+	var descContent = mycontent;
+
+
+
+var shareTitle = mycontent;
+
+
+
+    WeixinJSBridge.invoke('sendAppMessage',{
+
+
+
+        "appid": appid,
+
+
+
+        "img_url": imgUrl,
+
+
+
+        "img_width": "200",
+
+
+
+        "img_height": "200",
+
+
+
+        "link": lineLink,
+
+
+
+        "desc": descContent,
+
+
+
+        "title": shareTitle
+
+
+
+    }, function(res) {
+
+
+
+    })
+
+
+
+}
+
+
+
+function shareTimeline() {
+	var descContent = mycontent;
+
+
+
+var shareTitle = mycontent;
+
+
+
+
+    WeixinJSBridge.invoke('shareTimeline',{
+
+
+
+        "img_url": imgUrl,
+
+
+
+        "img_width": "200",
+
+
+
+        "img_height": "200",
+
+
+
+        "link": lineLink,
+
+
+
+        "desc": descContent,
+
+
+
+        "title": shareTitle
+
+
+
+    }, function(res) {
+
+
+
+    });
+
+
+
+}
+
+
+
+function shareWeibo() {
+
+	var descContent = mycontent;
+
+
+
+var shareTitle = mycontent;
+
+
+
+    WeixinJSBridge.invoke('shareWeibo',{
+
+
+
+        "content": descContent,
+
+
+
+        "url": lineLink,
+
+
+
+    }, function(res) {
+
+
+
+    });
+
+
+
+}
+
+
+
+// 当微信内置浏览器完成内部初始化后会触发WeixinJSBridgeReady事件。
+
+
+
+document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+
+
+
+    // 发送给好友
+
+
+
+    WeixinJSBridge.on('menu:share:appmessage', function(argv){
+
+
+
+        shareFriend();
+
+
+
+    });
+
+
+
+    // 分享到朋友圈
+
+
+
+    WeixinJSBridge.on('menu:share:timeline', function(argv){
+
+
+
+        shareTimeline();
+
+
+
+    });
+
+
+
+    // 分享到微博
+
+
+
+    WeixinJSBridge.on('menu:share:weibo', function(argv){
+
+
+
+        shareWeibo();
+
+
+
+    });
+
+
+
+}, false);
+
+
+
+</script>
+
+
+</body>
+</html>
