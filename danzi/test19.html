@@ -241,7 +241,7 @@ game.prototype.gameover=function(){
 	this.ctx.fillText(this.supercounter+"个超级黑块！",this.documentWidth/2,6/12*this.documentHeight);
 	jibai=(this.bonus/100-1)*0.8;
 				if(jibai>99.2)jibai=99.2;
-	this.ctx.fillText("击败了全国"+jibai.toFixed(1)+"\%的玩家！",this.documentWidth/2,7/12*this.documentHeight);
+	this.ctx.fillText("击败了全国"+jibai.toFixed(1)+"%%的玩家！",this.documentWidth/2,7/12*this.documentHeight);
 	
 	
 	this.canvas1.addEventListener('touchstart',playagain);
