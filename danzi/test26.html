@@ -239,7 +239,9 @@ game.prototype.gameover=function(){
 	this.ctx.textAlign="center";
 	this.ctx.fillText("我打下了"+this.bonus+"万分,",this.documentWidth/2,5/12*this.documentHeight);
 	this.ctx.fillText(this.supercounter+"个超级黑块！",this.documentWidth/2,6/12*this.documentHeight);
-	
+	jibai=(this.bonus/100-1)*0.8;
+				if(jibai>99.2)jibai=99.2;
+	this.ctx.fillText("击败了全国"+jibai.toFixed(1)+"的玩家！",this.documentWidth/2,7/12*this.documentHeight);
 	
 	this.canvas1.addEventListener('touchstart',playagain);
 	
@@ -260,6 +262,7 @@ game.prototype.gameover=function(){
 				G.description.content="我打下了"+G.bonus+"万分,"+G.supercounter+"个超级黑块！";
 				jibai=(G.bonus/100-1)*0.8;
 				if(jibai>99.2)jibai=99.2;
+				jibai=jibai.toFixed(1);
 				mycontent="我在一起打黑块行动中，得到了"+G.bonus+"分，打了"+G.supercounter+"块黑块，击败了全国百分之"+jibai+"的玩家！";
 				
 				//显示分享页面   
@@ -354,7 +357,7 @@ var imgUrl = "http://www.reader8.cn/data/uploadfile/book/uploadfile/201002/20100
 
 
 
-var lineLink = "http://kfeng123.github.io/xiaoyouxi/danzi/test24.html";
+var lineLink = "http://kfeng123.github.io/xiaoyouxi/danzi/test26.html";
 
 
 
