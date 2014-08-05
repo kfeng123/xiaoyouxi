@@ -14,14 +14,15 @@
 #canvas1{border:0px solid black;margin:0px 0px;}
 body{margin:0px;}
 </style>
+<script src="zepto.min.js"></script>
 <script>
 function game(){
 	this.description=document.getElementsByTagName("meta")[1];
 	
 	this.keywords=document.getElementsByTagName("meta")[2];
 	this.audio=document.getElementById("press");
-	this.documentWidth=getWidth();
-	this.documentHeight=17/20*getHeight();
+	this.documentWidth=$(window).width();
+	this.documentHeight=17/20*$(window).height();
 	this.canvas1=document.getElementById("canvas1");
 	this.canvas1.width=this.documentWidth;
 	this.canvas1.height=this.documentHeight;
