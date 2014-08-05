@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title></title>
+	<meta charset=utf-8>
 	<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0,user-scalable=no">
 <style>
 #canvas1{border:0px solid black;margin:0px 0px;}
@@ -9,8 +10,9 @@ body{margin:0px;}
 </style>
 <script>
 function game(){
+	this.audio=document.getElementById("press");
 	this.documentWidth=window.screen.availWidth;
-	this.documentHeight=window.screen.availHeight;
+	this.documentHeight=17/20*window.screen.availHeight;
 	this.canvas1=document.getElementById("canvas1");
 	this.canvas1.width=this.documentWidth;
 	this.canvas1.height=this.documentHeight;
@@ -29,6 +31,14 @@ function game(){
 	this.startbackground.src="./image/startbackground.png";
 	this.endbackground=new Image();
 	this.endbackground.src="./image/endbackground.png";
+	this.tongzhidajia=new Image();
+	this.tongzhidajia.src="./image/tongzhidajia.png";
+	this.zaidayici=new Image();
+	this.zaidayici.src="./image/zaidayici.png";
+	this.startbutton=new Image();
+	this.startbutton.src="./image/startbutton.png";
+	this.moregame=new Image();
+	this.moregame.src="./image/moregame.png";
 	//玩家的操作序列
 	this.wanjia=new Array();
 	//生成的块序列
@@ -165,6 +175,10 @@ game.prototype.zhen=function(GAME){
 				this.isanimation=true;
 				this.bonus+=100;
 				if(this.flag[0])this.supercounter++;
+				//音效
+				this.audio.pause();
+				this.audio.currentTime=0;	
+				this.audio.play();
 			}
 			else{
 				//触碰到白块,游戏结束
@@ -176,23 +190,43 @@ game.prototype.zhen=function(GAME){
 	}
 	//时间
 	var nowtime=new Date();
-	this.lasttime=60000-(nowtime.getTime()-this.date.getTime());
+	this.lasttime=30000-(nowtime.getTime()-this.date.getTime());
 	if(this.lasttime<=0)this.lasttime=0;
-	this.ctx.font="bold 20px 宋体";
+	this.ctx.font="bold 25px 宋体";
 	this.ctx.fillStyle="red";
-	this.ctx.fillText(this.lasttime/1000,this.documentWidth/2-20,20);
+	this.ctx.textAlign="center";
+	this.ctx.fillText(Math.round(this.lasttime/1000),this.documentWidth/2,30);
 	if(this.lasttime==0){this.gameover();return;}
 	window.webkitRequestAnimationFrame(function(){GAME.zhen(GAME)});
 }
 
 game.prototype.gameover=function(){
+	
 	this.ctx.drawImage(this.endbackground,0,0,this.documentWidth,this.documentHeight);
+	this.ctx.drawImage(this.tongzhidajia,4/32*this.documentWidth,8/12*this.documentHeight,11/32*this.documentWidth,1/12*this.documentHeight);
+	this.ctx.drawImage(this.zaidayici,17/32*this.documentWidth,8/12*this.documentHeight,11/32*this.documentWidth,1/12*this.documentHeight);
+	
+	this.ctx.font="bold 20px 宋体";
+	this.ctx.fillStyle="black";
+	this.ctx.textAlign="center";
+	this.ctx.fillText("我打下了"+this.bonus+"万分,",this.documentWidth/2,5/12*this.documentHeight);
+	this.ctx.fillText(this.supercounter+"个超级黑块！",this.documentWidth/2,6/12*this.documentHeight);
+	
+	
 	this.canvas1.addEventListener('touchstart',playagain);
+	
 	var G=this;
 	function playagain(ev){
-		G.canvas1.removeEventListener('touchstart',playagain);
-		var GAME=new game();
-		startgame(GAME);
+		
+		if(ev.touches[0].pageX>=17/32*G.documentWidth&&ev.touches[0].pageX<=28/32*G.documentWidth&&ev.touches[0].pageY>=8/12*G.documentHeight&&ev.touches[0].pageY<=9/12*G.documentHeight){
+			//再打一次
+			G.canvas1.removeEventListener('touchstart',playagain);
+			var GAME=new game();
+			startgame(GAME);
+			}
+		else{
+			//分享
+		}
 	}
 }
 
@@ -222,18 +256,39 @@ window.onload=function(){
 	GAME.startbackground.onload=function(){
 	GAME.ctx.drawImage(GAME.startbackground,0,0,GAME.documentWidth,GAME.documentHeight);
 	}
+	GAME.startbutton.onload=function(){
+		GAME.ctx.drawImage(GAME.startbutton,10/32*GAME.documentWidth,8/12*GAME.documentHeight,12/32*GAME.documentWidth,1/12*GAME.documentHeight);
+	}
+	GAME.moregame.onload=function(){
+		GAME.ctx.drawImage(GAME.moregame,21/32*GAME.documentWidth,11/12*GAME.documentHeight,11/32*GAME.documentWidth,1/12*GAME.documentHeight);
+	}
+	
 	GAME.canvas1.addEventListener('touchstart',kaishidianji);
 	function kaishidianji(ev){
-		GAME.canvas1.removeEventListener('touchstart',kaishidianji);
-		startgame(GAME);
-
+		if(ev.touches[0].pageX>=10/32*GAME.documentWidth&&ev.touches[0].pageX<=22/32*GAME.documentWidth&&ev.touches[0].pageY>=8/12*GAME.documentHeight&&ev.touches[0].pageY<=9/12*GAME.documentHeight){
+		//点击开始游戏
+			GAME.canvas1.removeEventListener('touchstart',kaishidianji);
+			startgame(GAME);
+		}
+		else{
+		//更多游戏
+		}
 	}
 	
 }
 
 </script>
+
 </head>
 <body>
 <canvas id="canvas1"></canvas>
+<audio id="press">
+	<source src="./audio/press.WAV" type="audio/x-wav">
+</audio>
+<script type="text/javascript">
+    /*20:3 创建于 2014-08-04*/
+    var cpro_id = "u1644496";
+</script>
+<script src="http://cpro.baidustatic.com/cpro/ui/cm.js" type="text/javascript"></script>
 </body>
 </html>
